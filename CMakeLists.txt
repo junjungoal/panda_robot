@@ -60,6 +60,7 @@ catkin_package(
 
 add_library(panda_robot_controllers
   src/cartesian_velocity_example_controller.cpp
+  src/cartesian_pose_example_controller.cpp
 )
 
 add_dependencies(panda_robot_controllers

@@ -5,6 +5,11 @@
     </description>
   </class>
   
+  <class name="panda_robot_controllers/CartesianPoseExampleController" type="panda_robot_controllers::CartesianPoseExampleController" base_class_type="controller_interface::ControllerBase">
+    <description>
+      A controller that executes a short motion based on cartesian pose to demonstrate correct usage
+    </description>
+  </class>
 </library>
 
 
