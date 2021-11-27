@@ -110,10 +110,11 @@ void CartesianPoseExampleController::update(const ros::Time& /* time */,
   bool is_in_contact = is_in_contact_x || is_in_contact_y || is_in_contact_z;
 
   std::array<double, 16> new_pose = this->current_pose;
-
   new_pose[12] = this->target_pose.position.x;
   new_pose[13] = this->target_pose.position.y;
   new_pose[14] = this->target_pose.position.z;
+  // std::array<double, 16> new_pose = this->current_pose;
+
   pose_cartesian_handle_->setCommand(new_pose);
 
   was_in_contact = is_in_contact;
