@@ -20,7 +20,7 @@ namespace panda_robot_controllers {
 bool CartesianPoseExampleController::init(hardware_interface::RobotHW* robot_hardware,
                                           ros::NodeHandle& node_handle) {
   if (!node_handle.getParam("arm_id", arm_id)) {
-    ROS_ERROR("CartesianVelocityExampleController: Could not get parameter arm_id");
+    ROS_ERROR("CartesianPoseExampleController: Could not get parameter arm_id");
     return false;
   }
 

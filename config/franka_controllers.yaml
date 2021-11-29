@@ -5,6 +5,7 @@ position_joint_trajectory_controller:
 cartesian_velocity_example_controller:
     type: panda_robot_controllers/CartesianVelocityExampleController
     arm_id: panda
+
 cartesian_pose_example_controller:
     type: panda_robot_controllers/CartesianPoseExampleController
     arm_id: panda
