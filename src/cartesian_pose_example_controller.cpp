@@ -1,131 +1,152 @@
 // Copyright (c) 2017 Franka Emika GmbH
 // Use of this source code is governed by the Apache-2.0 license, see LICENSE
-// #include <franka_example_controllers/cartesian_pose_example_controller.h>
 
-#include <panda_robot/cartesian_pose_example_controller.h>
 #include <cmath>
+#include <array>
 #include <memory>
 #include <stdexcept>
 #include <string>
 
 #include <controller_interface/controller_base.h>
+#include <controller_interface/multi_interface_controller.h>
+#include <franka_hw/franka_state_interface.h>
 #include <franka_hw/franka_cartesian_command_interface.h>
+
 #include <hardware_interface/hardware_interface.h>
+#include <hardware_interface/robot_hw.h>
+
 #include <pluginlib/class_list_macros.h>
 #include <ros/ros.h>
-#include <geometry_msgs/Pose.h>
+#include <ros/node_handle.h>
+#include <ros/time.h>
+#include <std_msgs/Float32MultiArray.h>
 
 namespace panda_robot_controllers {
 
-bool CartesianPoseExampleController::init(hardware_interface::RobotHW* robot_hardware,
-                                          ros::NodeHandle& node_handle) {
-  if (!node_handle.getParam("arm_id", arm_id)) {
-    ROS_ERROR("CartesianPoseExampleController: Could not get parameter arm_id");
-    return false;
-  }
 
-  pose_cartesian_interface_ = robot_hardware->get<franka_hw::FrankaPoseCartesianInterface>();
-  if (pose_cartesian_interface_ == nullptr) {
-    ROS_ERROR(
-        "CartesianPoseExampleController: Could not get Cartesian Pose "
-        "interface from hardware");
-    return false;
-  }
+    class CartesianPoseExampleController : public controller_interface::MultiInterfaceController<
+                                            franka_hw::FrankaPoseCartesianInterface,
+                                            franka_hw::FrankaStateInterface>
+    {
+    private:
 
-  try {
-    pose_cartesian_handle_ = std::make_unique<franka_hw::FrankaCartesianPoseHandle>(
-        pose_cartesian_interface_->getHandle(arm_id + "_robot"));
-  } catch (const hardware_interface::HardwareInterfaceException& e) {
-    ROS_ERROR_STREAM(
-        "CartesianPoseExampleController: Exception getting Cartesian handle: " << e.what());
-    return false;
-  }
+        franka_hw::FrankaPoseCartesianInterface*                cartesian_pose_interface_;
+        std::unique_ptr<franka_hw::FrankaCartesianPoseHandle>   cartesian_pose_handle_;
+        ros::Duration           elapsed_time_;
+        std::array<double, 16>  current_pose_{};
 
-  auto state_interface = robot_hardware->get<franka_hw::FrankaStateInterface>();
-  if (state_interface == nullptr) {
-    ROS_ERROR("CartesianPoseExampleController: Could not get state interface from hardware");
-    return false;
-  }
+        ros::Subscriber     pose_cmd_sub;
+        bool                read_message = false;
+        float               decay_rate   = 0.99;
 
-  // try {
-  //   auto state_handle = state_interface->getHandle(arm_id + "_robot");
-  //
-  //   std::array<double, 7> q_start{{0, -M_PI_4, 0, -3 * M_PI_4, 0, M_PI_2, M_PI_4}};
-  //   for (size_t i = 0; i < q_start.size(); i++) {
-  //     if (std::abs(state_handle.getRobotState().q_d[i] - q_start[i]) > 0.1) {
-  //       ROS_ERROR_STREAM(
-  //           "CartesianPoseExampleController: Robot is not in the expected starting position for "
-  //           "running this example. Run `roslaunch franka_example_controllers move_to_start.launch "
-  //           "robot_ip:=<robot-ip> load_gripper:=<has-attached-gripper>` first.");
-  //       return false;
-  //     }
-  //   }
-  // } catch (const hardware_interface::HardwareInterfaceException& e) {
-  //   ROS_ERROR_STREAM(
-  //       "CartesianPoseExampleController: Exception getting state handle: " << e.what());
-  //   return false;
-  // }
+        std::array<double, 16> raw_pose_cmd {};
+        std::array<double, 16> filtered_raw_pose_cmd {};
+        std::array<double, 16> filtered_target_cmd {};
+
+        float alpha1   = 0.999;
+        float alpha2   = 0.99;
 
 
-  this->was_in_contact = false;
-  this->time_since_last_target_pose = ros::Time::now();
-  this->target_pose_subscriber =
-      node_handle.subscribe("/franka_control/target_pose", 1, &CartesianPoseExampleController::target_pose_callback, this);
-  // this->current_pose_publisher = node_handle.advertise<geometry_msgs::Twist>("/franka_control/current_target_pose", 1);
-  return true;
-}
+    public:
+        bool init(hardware_interface::RobotHW* robot_hardware, ros::NodeHandle& node_handle)
+        {
 
-void CartesianPoseExampleController::target_pose_callback(const geometry_msgs::Pose::ConstPtr& msg) {
-    this->target_pose = *msg;
+            pose_cmd_sub = node_handle.subscribe("/franka_control/target_pose", 1, &CartesianPoseExampleController::cmd_callback, this);
 
-    if (this->target_pose.position.x != this->target_pose.position.x ||
-        this->target_pose.position.y != this->target_pose.position.y ||
-        this->target_pose.position.z != this->target_pose.position.z ||
-        this->target_pose.orientation.x != this->target_pose.orientation.x ||
-        this->target_pose.orientation.y != this->target_pose.orientation.y ||
-        this->target_pose.orientation.z != this->target_pose.orientation.z ||
-        this->target_pose.orientation.w != this->target_pose.orientation.w) {
+            cartesian_pose_interface_ = robot_hardware->get<franka_hw::FrankaPoseCartesianInterface>();
+            if (cartesian_pose_interface_ == nullptr) {
+                ROS_ERROR(
+                  "CartesianPoseExampleController: Could not get Cartesian Pose "
+                  "interface from hardware");
+                return false;
+            }
 
-        ROS_ERROR("Can't have NaN in the target pose");
-        exit(-1);
-    }
-    this->time_since_last_target_pose = ros::Time::now();
-}
+            std::string arm_id;
+            if (!node_handle.getParam("arm_id", arm_id)) {
+                ROS_ERROR("CartesianPoseExampleController: Could not get parameter arm_id");
+                return false;
+            }
 
-void CartesianPoseExampleController::starting(const ros::Time& /* time */) {
-  this->current_pose = pose_cartesian_handle_->getRobotState().O_T_EE_d;
-  elapsed_time_ = ros::Duration(0.0);
-}
+            try {
+                cartesian_pose_handle_ = std::make_unique<franka_hw::FrankaCartesianPoseHandle>(
+                                        cartesian_pose_interface_->getHandle(arm_id + "_robot")
+                                    );
+            } catch (const hardware_interface::HardwareInterfaceException& e) {
+                ROS_ERROR_STREAM(
+                    "CartesianPoseExampleController: Exception getting Cartesian handle: " << e.what());
+                return false;
+            }
 
-void CartesianPoseExampleController::update(const ros::Time& /* time */,
-                                            const ros::Duration& period) {
-  elapsed_time_ += period;
+            auto state_interface = robot_hardware->get<franka_hw::FrankaStateInterface>();
+            try {
+                auto state_handle = state_interface->getHandle(arm_id + "_robot");
 
-  auto state_handle = this->state_interface->getHandle(arm_id + "_robot");
-  
-  bool is_in_contact_x = state_handle.getRobotState().cartesian_contact[0] > 0;
-  bool is_in_contact_y = state_handle.getRobotState().cartesian_contact[1] > 0;
-  bool is_in_contact_z = state_handle.getRobotState().cartesian_contact[2] > 0;
+                // std::array<double, 7> q_start{{0, -M_PI_4, 0, -3 * M_PI_4, 0, M_PI_2, M_PI_4}};
+                // for (size_t i = 0; i < q_start.size(); i++) {
+                //     if (std::abs(state_handle.getRobotState().q_d[i] - q_start[i]) > 0.1) {
+                //         ROS_ERROR_STREAM(
+                //           "CartesianPoseExampleController: Robot is not in the expected starting position for "
+                //           "running this example. Move robot to init pose first.");
+                //         return false;
+                //     }
+                // }
+            } catch (const hardware_interface::HardwareInterfaceException& e) {
+                ROS_ERROR_STREAM(
+                    "CartesianPoseExampleController: Exception getting state handle: " << e.what());
+                return false;
+            }
 
-  bool is_in_contact = is_in_contact_x || is_in_contact_y || is_in_contact_z;
+            return true;
+        }
 
-  std::array<double, 16> new_pose = this->current_pose;
-  new_pose[12] = this->target_pose.position.x;
-  new_pose[13] = this->target_pose.position.y;
-  new_pose[14] = this->target_pose.position.z;
-  // std::array<double, 16> new_pose = this->current_pose;
+        void starting(const ros::Time&) {
+            current_pose_ = cartesian_pose_handle_->getRobotState().O_T_EE_d;
+            filtered_raw_pose_cmd = current_pose_;
+            raw_pose_cmd = current_pose_;
 
-  pose_cartesian_handle_->setCommand(new_pose);
+            elapsed_time_ = ros::Duration(0.0);
+        }
 
-  was_in_contact = is_in_contact;
-}
+        void update(const ros::Time&, const ros::Duration& period) {
 
-void CartesianPoseExampleController::stopping(const ros::Time& /*time*/) {
-  this->current_pose = pose_cartesian_handle_->getRobotState().O_T_EE_d;
-  pose_cartesian_handle_->setCommand(this->current_pose);
-}
+            // update the current pose
+            std::array<double, 16>  current_pose_ = cartesian_pose_handle_->getRobotState().O_T_EE_d;
 
-}  // namespace franka_example_controllers
+            if (read_message == true) {
+                // resetting the duration if there was a message
+                elapsed_time_ = ros::Duration(0.);
+
+                // if (elapsed_time_.toSec() < 0.2) { // not sure if I want to look at 0.1 s instead....
+                    // update the target filter if the elapsed time is ok, otherwise
+                    // just stay where it was commanded before
+
+                read_message = false; // reset the message
+            }
+            else {
+                // updating if there wasn't, there could be something wrong
+                elapsed_time_ += period;
+            }
+
+            for (int i=0; i < 16; i++) {
+                filtered_raw_pose_cmd[i] = alpha1 * filtered_raw_pose_cmd[i] + (1.0-alpha1) * raw_pose_cmd[i];
+                current_pose_[i] = alpha2 * current_pose_[i] + (1.0-alpha2) * filtered_raw_pose_cmd[i];
+            }
+
+            cartesian_pose_handle_->setCommand(current_pose_);
+
+        }
+
+        void cmd_callback(const std_msgs::Float32MultiArray::ConstPtr& msgs) {
+
+            for (int i = 0; i<16 ; i++) {
+                raw_pose_cmd[i] = msgs->data[i];
+            }
+            read_message = true;
+        }
+
+    };
+}  // namespace franka_interface
 
 PLUGINLIB_EXPORT_CLASS(panda_robot_controllers::CartesianPoseExampleController,
                        controller_interface::ControllerBase)
+
