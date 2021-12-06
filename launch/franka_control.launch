@@ -12,8 +12,8 @@
   </include>
 
   <node name="franka_control" pkg="franka_control" type="franka_control_node" output="screen" required="true">
-      <rosparam command="load" file="$(find franka_control)/config/franka_control_node.yaml" />
-      <rosparam param="/franka_control/internal_controller" subst_value="true">$(arg internal_controller)</rosparam>
+    <rosparam command="load" file="$(find franka_control)/config/franka_control_node.yaml" />
+    <rosparam param="/franka_control/internal_controller" subst_value="true">$(arg internal_controller)</rosparam>
     <param name="robot_ip" value="$(arg robot_ip)" />
   </node>
 
