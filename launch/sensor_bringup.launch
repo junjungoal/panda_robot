@@ -5,6 +5,9 @@
   <arg name="camera1"              default="camera1"/>
   <arg name="camera2"              default="camera2"/>
   <arg name="camera3"              default="camera3"/>
+  <arg name="use_camera1"              default="true"/>
+  <arg name="use_camera2"              default="true"/>
+  <arg name="use_camera3"              default="true"/>
   <arg name="tf_prefix_camera1"           default="$(arg camera1)"/>
   <arg name="tf_prefix_camera2"           default="$(arg camera2)"/>
   <arg name="tf_prefix_camera3"           default="$(arg camera3)"/>
@@ -36,7 +39,7 @@
   
   
 
-  <group ns="$(arg camera1)">
+  <group ns="$(arg camera1)" if="$(arg use_camera1)">
     <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
       <arg name="tf_prefix"                value="$(arg tf_prefix_camera1)"/>
       <arg name="external_manager"         value="$(arg external_manager)"/>
@@ -69,7 +72,7 @@
 
     </include>
   </group>
-  <group ns="$(arg camera2)">
+  <group ns="$(arg camera2)" if="$(arg use_camera2)">
     <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
       <arg name="tf_prefix"                value="$(arg tf_prefix_camera2)"/>
       <arg name="external_manager"         value="$(arg external_manager)"/>
@@ -101,7 +104,7 @@
 
     </include>
   </group>
-  <group ns="$(arg camera3)">
+  <group ns="$(arg camera3)" if="$(arg use_camera3)">
     <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
       <arg name="tf_prefix"                value="$(arg tf_prefix_camera3)"/>
       <arg name="external_manager"         value="$(arg external_manager)"/>
