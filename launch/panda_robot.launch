@@ -2,7 +2,7 @@
 <launch>
   <arg name="load_gripper" default="true" />
   <arg name="launch_rviz" default="true" />
-  <arg name='launch_joy' default='true' />
+  <!-- <arg name='launch_joy' default='true' /> -->
   <arg name='launch_sensor' default='true' />
   <arg name='use_camea1' default='true' />
   <arg name='use_camea2' default='true' />
@@ -13,7 +13,7 @@
   </include>
 
   <include file="$(find panda_robot)/launch/moveit_rviz.launch" if="$(arg launch_rviz)" />
-  <include file="$(find panda_robot)/launch/franka_arm_joy.launch" if="$(arg launch_joy)" />
+  <!-- <include file="$(find panda_robot)/launch/franka_arm_joy.launch" if="$(arg launch_joy)" /> -->
   <include file="$(find panda_robot)/launch/franka_arm_joy.launch" if="$(arg launch_sensor)">
       <param name='use_camera1' type='bool' value="$(arg use_camera1)" />
       <param name='use_camera2' type='bool' value="$(arg use_camera2)" />
