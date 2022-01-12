@@ -23,7 +23,6 @@ find_package(catkin REQUIRED
   tf2_eigen
   tf2_geometry_msgs
   rospy
-  trac_ik_lib
 )
 
 find_package(Eigen3 REQUIRED)
@@ -62,8 +61,8 @@ catkin_package(
 add_library(panda_robot_controllers
   src/cartesian_velocity_example_controller.cpp
   src/cartesian_pose_example_controller.cpp
-  src/panda_trac_ik.cpp
-  src/cartesian_ik_controller.cpp
+  # src/panda_trac_ik.cpp
+  # src/cartesian_ik_controller.cpp
 )
 
 add_dependencies(panda_robot_controllers
