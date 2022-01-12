@@ -9,6 +9,12 @@
     <description>
       A controller that executes a short motion based on cartesian pose to demonstrate correct usage
     </description>
+</class>
+  <class name="panda_robot_controllers/CartesianIKController" type="panda_robot_controllers::PandaPoseController" base_class_type="controller_interface::ControllerBase">
+    <description>
+      A controller that implements TRACIK to calculate the desired joint position of the Panda from Cartesian Pose, 
+      and smoothly moves from one joint configuration to another via three options.
+    </description>
   </class>
 </library>
 

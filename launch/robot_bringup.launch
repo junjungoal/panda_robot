@@ -2,6 +2,7 @@
 <launch>
   <arg name="robot_ip" default="panda"/>
   <arg name="load_gripper" default="true" />
+  <arg name="sim" default="false" />
 
   <include file="$(find panda_robot)/launch/franka_control.launch" >
     <arg name="robot_ip" value="$(arg robot_ip)" />
@@ -13,7 +14,7 @@
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
         args="cartesian_velocity_example_controller"/>
   <node name="controller_spawner2" pkg="controller_manager" type="spawner" respawn="false" output="screen"
-      args="--stopped position_joint_trajectory_controller joint_group_velocity_controller cartesian_pose_example_controller"/>
+      args="--stopped position_joint_trajectory_controller joint_group_velocity_controller cartesian_pose_example_controller cartesian_ik_controller"/>
 
 </launch>
 
