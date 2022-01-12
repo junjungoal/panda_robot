@@ -20,7 +20,3 @@ joint_group_velocity_controller:
       - panda_joint5
       - panda_joint6
       - panda_joint7
-<<<<<<< HEAD
-
-=======
->>>>>>> 06e8e7c905d0adf1e982fe92774bd8d737e98a40
