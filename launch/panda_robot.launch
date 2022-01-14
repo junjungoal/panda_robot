@@ -8,7 +8,7 @@
   <arg name='use_camera2' default='true' />
   <arg name='use_camera3' default='true' />
   <arg name="config" default="$(find armer_panda)/cfg/panda_real.yaml" />
-  <arg name='launch_armer' default='false'>
+  <arg name='launch_armer' default='false' />
 
   <include file="$(find panda_robot)/launch/move_group.launch">
     <arg name="load_gripper" value="$(arg load_gripper)" />
