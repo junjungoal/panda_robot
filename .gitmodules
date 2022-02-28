@@ -1,3 +1,6 @@
 [submodule "interactions"]
 	path = interactions
 	url = git@github.com:junjungoal/interactions.git
+[submodule "UnseenObjectClustering"]
+	path = UnseenObjectClustering
+	url = git@github.com:junjungoal/UnseenObjectClustering.git
