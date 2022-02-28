@@ -1,0 +1,3 @@
+[submodule "interactions"]
+	path = interactions
+	url = git@github.com:junjungoal/interactions.git
