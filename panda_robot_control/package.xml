@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>panda_robot</name>
+  <name>panda_robot_control</name>
   <version>0.1.0</version>
   <description>Panda Robot</description>
   <license>BSD</license>

@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <launch>
-  <rosparam command="load" file="$(find panda_robot)/config/franka_controllers.yaml" />
+  <rosparam command="load" file="$(find panda_robot_control)/config/franka_controllers.yaml" />
 
   <node name="controller_spawner3" pkg="controller_manager" type="spawner" respawn="false" output="screen"
         args="--stopped cartesian_pose_example_controller"/>

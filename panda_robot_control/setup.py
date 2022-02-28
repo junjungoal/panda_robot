@@ -5,7 +5,7 @@ from catkin_pkg.python_setup import generate_distutils_setup
 
 # fetch values from package.xml
 setup_args = generate_distutils_setup(
-    packages=['panda_robot'],
+    packages=['panda_robot_control'],
     package_dir={'': 'src'},
     requires=['std_msgs', 'rospy', 'message_filters', 'sensor_msgs']
 )

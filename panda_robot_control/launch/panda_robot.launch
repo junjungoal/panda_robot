@@ -10,13 +10,13 @@
   <!-- <arg name="config" default="$(find armer_panda)/cfg/panda_real.yaml" /> -->
   <arg name='launch_armer' default='false' />
 
-  <include file="$(find panda_robot)/launch/move_group.launch">
+  <include file="$(find panda_robot_control)/launch/move_group.launch">
     <arg name="load_gripper" value="$(arg load_gripper)" />
   </include>
 
-  <include file="$(find panda_robot)/launch/moveit_rviz.launch" if="$(arg launch_rviz)" />
-  <include file="$(find panda_robot)/launch/franka_arm_joy.launch" if="$(arg launch_joy)" />
-  <include file="$(find panda_robot)/launch/sensor_bringup.launch" if="$(arg launch_sensor)">
+  <include file="$(find panda_robot_control)/launch/moveit_rviz.launch" if="$(arg launch_rviz)" />
+  <include file="$(find panda_robot_control)/launch/franka_arm_joy.launch" if="$(arg launch_joy)" />
+  <include file="$(find panda_robot_control)/launch/sensor_bringup.launch" if="$(arg launch_sensor)">
       <arg name='use_camera1' value="$(arg use_camera1)" />
       <arg name='use_camera2' value="$(arg use_camera2)" />
       <arg name='use_camera3' value="$(arg use_camera3)" />
