@@ -206,10 +206,10 @@ Processing enabled by this node:
   </node>
 
   <node pkg="tf" type="static_transform_publisher" name="realsense_link_broadcaster"
-        args="0.040 -0.0175 0.066 3.1415 -1.571 0 /panda_hand /camera_link 100" />
+        args="0.040 -0.0175 0.066 3.1415 -1.571 0 /panda_hand /$(arg camera)_link 100" />
 
   <node name="configure_temporal_filter" pkg="dynamic_reconfigure" type="dynparam"
-    args="set_from_parameters camera/temporal">
+    args="set_from_parameters $(arg camera)/temporal">
       <param name="filter_smooth_delta" value="50" />
       <param name="filter_smooth_alpha" value="0.1"/>
       <param name="holes_fill"          value="3"  />

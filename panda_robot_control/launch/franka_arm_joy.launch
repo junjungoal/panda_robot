@@ -6,9 +6,5 @@
     <param name="deadzone" value="0.1" />
     <param name="autorepeat_rate" value="30" />
   </node>
-
-  <!-- <node pkg="panda_robot" type="remap_joy_to_twist.py" name="franka_joystick_mapper" output="screen" required="true"/> -->
-
-  <!-- <include file="$(find panda_moveit_config)/launch/moveit_rviz.launch" if="$(arg launch_rviz)" /> -->
 </launch>
 

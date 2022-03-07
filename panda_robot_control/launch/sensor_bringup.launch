@@ -109,95 +109,11 @@
     </include>
 </group>
 
-  <group ns="$(arg camera2)" if="$(arg use_camera2)">
-    <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
-      <arg name="tf_prefix"                value="$(arg tf_prefix_camera2)"/>
-      <arg name="external_manager"         value="$(arg external_manager)"/>
-      <arg name="manager"                  value="$(arg manager)"/>
-      <arg name="output"                   value="$(arg output)"/>
-      <arg name="respawn"                  value="$(arg respawn)"/>
-      <arg name="serial_no"                value="$(arg serial_no_camera2)"/>
-
-      <arg name="color_width"              value="$(arg color_width)"/>
-      <arg name="color_height"             value="$(arg color_height)"/>
-      <arg name="enable_color"             value="$(arg enable_color)"/>
-      <arg name="enable_depth"             value="$(arg enable_depth)"/>
-      <arg name="enable_confidence"             value="$(arg enable_confidence)"/>
-
-      <arg name="color_fps"                value="$(arg color_fps)"/>
-
-      <arg name="publish_tf"               value="$(arg publish_tf)"/>
-      <arg name="tf_publish_rate"          value="$(arg tf_publish_rate)"/>
-
-      <arg name="clip_distance"            value="$(arg clip_distance)"/>
-      <arg name="reconnect_timeout"        value="$(arg reconnect_timeout)"/>
-      <arg name="topic_odom_in"            value="$(arg topic_odom_in)"/>
-      <arg name="calib_odom_file"          value="$(arg calib_odom_file)"/>
-      <arg name="publish_odom_tf"          value="$(arg publish_odom_tf)"/>
-      <arg name="stereo_module/exposure/1" value="$(arg stereo_module/exposure/1)"/>
-      <arg name="stereo_module/gain/1"     value="$(arg stereo_module/gain/1)"/>
-      <arg name="stereo_module/exposure/2" value="$(arg stereo_module/exposure/2)"/>
-      <arg name="stereo_module/gain/2"     value="$(arg stereo_module/gain/2)"/>
+    <include file="$(find panda_robot_control)/launch/wrist_realsense.launch" if="$(arg use_camera2)">
+        <arg name="serial_no"           value="$(arg serial_no_camera2)"/>
+        <arg name="camera"              value="camera2" />
+        <arg name="namespace"              value="camera2" />
     </include>
-
-    <!-- RGB processing -->
-    <include if="$(arg rgb_processing)"
-             file="$(find rgbd_launch)/launch/includes/rgb.launch.xml">
-      <arg name="manager"                       value="$(arg manager)" />
-      <arg name="respawn"                       value="$(arg respawn)" />
-      <arg name="rgb"                           value="$(arg rgb)" />
-      <arg name="debayer_processing"            value="$(arg debayer_processing)" />
-    </include>
-
-    <group if="$(eval depth_registered_processing and sw_registered_processing)">
-      <node pkg="nodelet" type="nodelet" name="register_depth"
-            args="load depth_image_proc/register $(arg manager) $(arg bond)" respawn="$(arg respawn)">
-        <remap from="rgb/camera_info"             to="$(arg rgb)/camera_info" />
-        <remap from="depth/camera_info"           to="$(arg depth)/camera_info" />
-        <remap from="depth/image_rect"            to="$(arg depth)/image_rect_raw" />
-        <remap from="depth_registered/image_rect" to="$(arg depth_registered)/sw_registered/image_rect_raw" />
-      </node>
-
-      <!-- Publish registered XYZRGB point cloud with software registered input -->
-      <node pkg="nodelet" type="nodelet" name="points_xyzrgb_sw_registered"
-            args="load depth_image_proc/point_cloud_xyzrgb $(arg manager) $(arg bond)" respawn="$(arg respawn)">
-        <remap from="rgb/image_rect_color"        to="$(arg rgb)/image_rect_color" />
-        <remap from="rgb/camera_info"             to="$(arg rgb)/camera_info" />
-        <remap from="depth_registered/image_rect" to="$(arg depth_registered_filtered)/sw_registered/image_rect_raw" />
-        <remap from="depth_registered/points"     to="$(arg depth_registered)/points" />
-      </node>
-    </group>
-
-    <group if="$(eval depth_registered_processing and hw_registered_processing)">
-      <!-- Publish registered XYZRGB point cloud with hardware registered input (ROS Realsense depth alignment) -->
-      <node pkg="nodelet" type="nodelet" name="points_xyzrgb_hw_registered"
-            args="load depth_image_proc/point_cloud_xyzrgb $(arg manager) $(arg bond)" respawn="$(arg respawn)">
-        <remap from="rgb/image_rect_color"        to="$(arg rgb)/image_rect_color" />
-        <remap from="rgb/camera_info"             to="$(arg rgb)/camera_info" />
-        <remap from="depth_registered/image_rect" to="$(arg depth_registered)/image_raw" />
-        <remap from="depth_registered/points"     to="$(arg depth_registered_pub)/points" />
-      </node>
-    </group>
-
-  </group>
-
-  <node pkg="nodelet" type="nodelet" name="standalone_nodelet"  args="manager"/>
-
-  <node pkg="nodelet" type="nodelet" name="convert_depth_to_m"
-        args="load depth_image_proc/convert_metric standalone_nodelet">
-        <remap from="image_raw" to="$(arg namespace2)/depth/image_rect_raw"/>
-        <remap from="image" to="$(arg namespace2)/depth/image_meters"/>
-  </node>
-
-  <node pkg="tf" type="static_transform_publisher" name="realsense_link_broadcaster"
-        args="0.040 -0.0175 0.066 3.1415 -1.571 0 /panda_hand /camera2_link 100" />
-
-  <node name="configure_temporal_filter" pkg="dynamic_reconfigure" type="dynparam"
-    args="set_from_parameters camera/temporal">
-      <param name="filter_smooth_delta" value="50" />
-      <param name="filter_smooth_alpha" value="0.1"/>
-      <param name="holes_fill"          value="3"  />
-  </node>
 
   <group ns="$(arg camera3)" if="$(arg use_camera3)">
     <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
