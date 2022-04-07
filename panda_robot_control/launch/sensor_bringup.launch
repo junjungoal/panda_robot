@@ -89,6 +89,7 @@
       <arg name="color_height"             value="$(arg color_height)"/>
       <arg name="enable_color"             value="$(arg enable_color)"/>
       <arg name="enable_depth"             value="$(arg enable_depth)"/>
+      <arg name="enable_pointcloud"             value="$(arg enable_depth)"/>
       <arg name="enable_confidence"             value="$(arg enable_confidence)"/>
 
       <arg name="color_fps"                value="$(arg color_fps)"/>
@@ -123,6 +124,7 @@
       <arg name="enable_color"             value="$(arg enable_color)"/>
       <arg name="enable_depth"             value="$(arg enable_depth)"/>
       <arg name="enable_confidence"             value="$(arg enable_confidence)"/>
+      <arg name="enable_pointcloud"             value="$(arg enable_depth)"/>
 
       <arg name="color_fps"                value="$(arg color_fps)"/>
 
@@ -139,39 +141,47 @@
       <arg name="stereo_module/exposure/2" value="$(arg stereo_module/exposure/2)"/>
       <arg name="stereo_module/gain/2"     value="$(arg stereo_module/gain/2)"/>
 
-    </include>
+      </include>
   </group>
 
-  <group ns="$(arg camera3)" if="$(arg use_camera3)">
-    <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
-      <arg name="tf_prefix"                value="$(arg tf_prefix_camera3)"/>
-      <arg name="external_manager"         value="$(arg external_manager)"/>
-      <arg name="manager"                  value="$(arg manager)"/>
-      <arg name="output"                   value="$(arg output)"/>
-      <arg name="respawn"                  value="$(arg respawn)"/>
-      <arg name="serial_no"                value="$(arg serial_no_camera3)"/>
-
-      <arg name="color_width"              value="$(arg color_width)"/>
-      <arg name="color_height"             value="$(arg color_height)"/>
-      <arg name="enable_color"             value="$(arg enable_color)"/>
-      <arg name="enable_depth"             value="$(arg enable_depth)"/>
-      <arg name="enable_confidence"             value="$(arg enable_confidence)"/>
-
-      <arg name="color_fps"                value="$(arg color_fps)"/>
-
-      <arg name="publish_tf"               value="$(arg publish_tf)"/>
-      <arg name="tf_publish_rate"          value="$(arg tf_publish_rate)"/>
-
-      <arg name="clip_distance"            value="$(arg clip_distance)"/>
-      <arg name="reconnect_timeout"        value="$(arg reconnect_timeout)"/>
-      <arg name="topic_odom_in"            value="$(arg topic_odom_in)"/>
-      <arg name="calib_odom_file"          value="$(arg calib_odom_file)"/>
-      <arg name="publish_odom_tf"          value="$(arg publish_odom_tf)"/>
-      <arg name="stereo_module/exposure/1" value="$(arg stereo_module/exposure/1)"/>
-      <arg name="stereo_module/gain/1"     value="$(arg stereo_module/gain/1)"/>
-      <arg name="stereo_module/exposure/2" value="$(arg stereo_module/exposure/2)"/>
-      <arg name="stereo_module/gain/2"     value="$(arg stereo_module/gain/2)"/>
-
+  <!-- <group ns="$(arg camera3)" if="$(arg use_camera3)"> -->
+  <!--   <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml"> -->
+  <!--     <arg name="tf_prefix"                value="$(arg tf_prefix_camera3)"/> -->
+  <!--     <arg name="external_manager"         value="$(arg external_manager)"/> -->
+  <!--     <arg name="manager"                  value="$(arg manager)"/> -->
+  <!--     <arg name="output"                   value="$(arg output)"/> -->
+  <!--     <arg name="respawn"                  value="$(arg respawn)"/> -->
+  <!--     <arg name="serial_no"                value="$(arg serial_no_camera3)"/> -->
+  <!--  -->
+  <!--     <arg name="color_width"              value="$(arg color_width)"/> -->
+  <!--     <arg name="color_height"             value="$(arg color_height)"/> -->
+  <!--     <arg name="enable_color"             value="$(arg enable_color)"/> -->
+  <!--     <arg name="enable_depth"             value="$(arg enable_depth)"/> -->
+  <!--     <arg name="enable_confidence"             value="$(arg enable_confidence)"/> -->
+  <!--     <arg name="enable_pointcloud"             value="$(arg enable_depth)"/> -->
+  <!--  -->
+  <!--     <arg name="color_fps"                value="$(arg color_fps)"/> -->
+  <!--  -->
+  <!--     <arg name="publish_tf"               value="$(arg publish_tf)"/> -->
+  <!--     <arg name="tf_publish_rate"          value="$(arg tf_publish_rate)"/> -->
+  <!--  -->
+  <!--     <arg name="clip_distance"            value="$(arg clip_distance)"/> -->
+  <!--     <arg name="reconnect_timeout"        value="$(arg reconnect_timeout)"/> -->
+  <!--     <arg name="topic_odom_in"            value="$(arg topic_odom_in)"/> -->
+  <!--     <arg name="calib_odom_file"          value="$(arg calib_odom_file)"/> -->
+  <!--     <arg name="publish_odom_tf"          value="$(arg publish_odom_tf)"/> -->
+  <!--     <arg name="stereo_module/exposure/1" value="$(arg stereo_module/exposure/1)"/> -->
+  <!--     <arg name="stereo_module/gain/1"     value="$(arg stereo_module/gain/1)"/> -->
+  <!--     <arg name="stereo_module/exposure/2" value="$(arg stereo_module/exposure/2)"/> -->
+  <!--     <arg name="stereo_module/gain/2"     value="$(arg stereo_module/gain/2)"/> -->
+  <!--  -->
+      <!-- </include> -->
+  <!-- </group> -->
+    <include file="$(find panda_robot_control)/launch/horizontal_realsense.launch" if="$(arg use_camera3)">
+        <arg name="serial_no"           value="$(arg serial_no_camera3)"/>
+        <arg name="camera"              value="camera3" />
+        <arg name="namespace"              value="camera3" />
     </include>
-  </group>
+      <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="camera_link_broadcaster" -->
+      <!-- args="1.28841 0.026703 0.626545   0.603626 0.600543 -0.354738 -0.386194 panda_link0 camera3_color_optical_frame" /> -->
 </launch>

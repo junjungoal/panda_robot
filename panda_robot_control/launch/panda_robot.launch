@@ -7,22 +7,36 @@
   <arg name='use_camera1' default='true' />
   <arg name='use_camera2' default='true' />
   <arg name='use_camera3' default='true' />
-  <!-- <arg name="config" default="$(find armer_panda)/cfg/panda_real.yaml" /> -->
-  <!-- <arg name='launch_armer' default='true' /> -->
+  <arg name="config" default="$(find armer_panda)/cfg/panda_real.yaml" />
+  <arg name='launch_armer' default='false' />
+
+  <!-- If needed, broadcast static tf for robot root -->
+  <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="virtual_joint_broadcaster_1" args="0 0 0 0 0 0 world panda_link0" /> -->
 
   <include file="$(find panda_robot_control)/launch/move_group.launch">
+  <!-- <include file="$(find panda_moveit_config)/launch/move_group.launch"> -->
     <arg name="load_gripper" value="$(arg load_gripper)" />
+    <!-- <arg name="allow_trajectory_execution" value="true"/> -->
+    <!-- <arg name="fake_execution" value="true"/> -->
+    <!-- <arg name="info" value="true"/> -->
+    <!-- <arg name="debug" value="false"/> -->
+    <!-- <arg name="pipeline" value="ompl"  /> -->
   </include>
 
-  <include file="$(find panda_robot_control)/launch/moveit_rviz.launch" if="$(arg launch_rviz)" />
+  <include file="$(find panda_robot_control)/launch/moveit_rviz.launch" if="$(arg launch_rviz)">
+  <!-- <include file="$(find panda_moveit_config)/launch/moveit_rviz.launch" if="$(arg launch_rviz)"> -->
+    <arg name="rviz_tutorial" value="false"/>
+    <arg name="debug" value="false"/>
+</include>
+
   <include file="$(find panda_robot_control)/launch/franka_arm_joy.launch" if="$(arg launch_joy)" />
   <include file="$(find panda_robot_control)/launch/sensor_bringup.launch" if="$(arg launch_sensor)">
       <arg name='use_camera1' value="$(arg use_camera1)" />
       <arg name='use_camera2' value="$(arg use_camera2)" />
       <arg name='use_camera3' value="$(arg use_camera3)" />
   </include>
-<!-- <include file="$(find armer)/launch/armer.launch" if="$(arg launch_armer)"> -->
-<!--     <arg name="config" value="$(arg config)" /> -->
-<!-- </include> -->
+<include file="$(find armer)/launch/armer.launch" if="$(arg launch_armer)">
+    <arg name="config" value="$(arg config)" />
+</include>
 </launch>
 
