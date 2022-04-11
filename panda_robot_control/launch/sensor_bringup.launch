@@ -175,7 +175,7 @@
   <!--     <arg name="stereo_module/exposure/2" value="$(arg stereo_module/exposure/2)"/> -->
   <!--     <arg name="stereo_module/gain/2"     value="$(arg stereo_module/gain/2)"/> -->
   <!--  -->
-      <!-- </include> -->
+  <!--     </include> -->
   <!-- </group> -->
     <include file="$(find panda_robot_control)/launch/horizontal_realsense.launch" if="$(arg use_camera3)">
         <arg name="serial_no"           value="$(arg serial_no_camera3)"/>

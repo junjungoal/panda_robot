@@ -55,7 +55,7 @@ Processing enabled by this node:
 
   <arg name="fisheye_width"       default="640"/>
   <arg name="fisheye_height"      default="480"/>
-  <arg name="enable_fisheye"      default="true"/>
+  <arg name="enable_fisheye"      default="false"/>
 
   <arg name="depth_width"         default="640"/>
   <arg name="depth_height"        default="480"/>
@@ -76,8 +76,8 @@ Processing enabled by this node:
   <arg name="color_fps"           default="30"/>
   <arg name="gyro_fps"            default="400"/>
   <arg name="accel_fps"           default="250"/>
-  <arg name="enable_gyro"         default="true"/>
-  <arg name="enable_accel"        default="true"/>
+  <arg name="enable_gyro"         default="false"/>
+  <arg name="enable_accel"        default="false"/>
 
   <arg name="enable_pointcloud"   default="false"/>
   <arg name="enable_sync"         default="true"/>
@@ -205,15 +205,10 @@ Processing enabled by this node:
         <remap from="image" to="$(arg namespace)/depth/image_meters"/>
   </node>
 
-  <!-- <node pkg="tf" type="static_transform_publisher" name="realsense_link_broadcaster" -->
-  <!--       args="0.040 -0.0175 0.066 3.1415 -1.571 0 /panda_hand /$(arg camera)_link 100" /> -->
   <node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster"
-      args="1.28841 0.026703 0.626545   0.603626 0.600543 -0.354738 -0.386194 /panda_link0 /$(arg camera)_color_optical_frame 100"/>
+      args="1.17188 0.0125332 0.764363 0.667584 0.700593 -0.174871 -0.18144 /panda_link0 /$(arg camera)_color_optical_frame 100"/>
   <node pkg="tf" type="static_transform_publisher" name="world2camera_link_broadcaster"
-      args="1.28841 0.026703 0.626545   0.603626 0.600543 -0.354738 -0.386194 /world /$(arg camera)_link 100" />
-      <!-- args="1.28841 0.026703 0.626545   0.603626 0.600543 -0.354738 -0.386194 /world /$(arg camera)_color_optical_frame 100" /> -->
-  <!-- <node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster" -->
-  <!--     args="1.28841 0.026703 0.626545 -3.052579 -1.1019945 -1.5109514 /panda_link0 /$(arg camera)_color_optical_frame 100" /> -->
+      args="1.17188 0.0125332 0.764363 0.667584 0.700593 -0.174871 -0.18144 /world /$(arg camera)_link 50"/>
 
   <node name="configure_temporal_filter" pkg="dynamic_reconfigure" type="dynparam"
     args="set_from_parameters $(arg camera)/temporal">
