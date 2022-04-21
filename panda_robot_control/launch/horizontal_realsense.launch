@@ -63,8 +63,8 @@ Processing enabled by this node:
 
   <arg name="infra_width"         default="640"/>
   <arg name="infra_height"        default="480"/>
-  <arg name="enable_infra1"       default="true"/>
-  <arg name="enable_infra2"       default="true"/>
+  <arg name="enable_infra1"       default="false"/>
+  <arg name="enable_infra2"       default="false"/>
 
   <arg name="color_width"         default="640"/>
   <arg name="color_height"        default="480"/>
@@ -83,6 +83,7 @@ Processing enabled by this node:
   <arg name="enable_sync"         default="true"/>
   <arg name="align_depth"         default="true"/>
   <arg name="filters"             default="disparity,spatial,temporal"/>
+  <arg name="enable_confidence"        default="false"/>
 
   <!-- rgbd_launch specific arguments -->
 
@@ -135,6 +136,8 @@ Processing enabled by this node:
       <arg name="depth_width"              value="$(arg depth_width)"/>
       <arg name="depth_height"             value="$(arg depth_height)"/>
       <arg name="enable_depth"             value="$(arg enable_depth)"/>
+
+      <arg name="enable_confidence"             value="$(arg enable_confidence)"/>
 
       <arg name="color_width"              value="$(arg color_width)"/>
       <arg name="color_height"             value="$(arg color_height)"/>
@@ -206,9 +209,9 @@ Processing enabled by this node:
   </node>
 
   <node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster"
-      args="1.17188 0.0125332 0.764363 0.667584 0.700593 -0.174871 -0.18144 /panda_link0 /$(arg camera)_color_optical_frame 100"/>
+      args="1.17188 0.0125332 0.764363 0.667584 0.700593 -0.174871 -0.18144 /panda_link0 /$(arg camera)_color_optical_frame 40"/>
   <node pkg="tf" type="static_transform_publisher" name="world2camera_link_broadcaster"
-      args="1.17188 0.0125332 0.764363 0.667584 0.700593 -0.174871 -0.18144 /world /$(arg camera)_link 50"/>
+      args="1.17188 0.0125332 0.764363 0.667584 0.700593 -0.174871 -0.18144 /world /$(arg camera)_link 40"/>
 
   <node name="configure_temporal_filter" pkg="dynamic_reconfigure" type="dynparam"
     args="set_from_parameters $(arg camera)/temporal">

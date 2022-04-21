@@ -24,7 +24,7 @@
 
   <arg name="depth_width"         default="640"/>
   <arg name="depth_height"        default="480"/>
-  <arg name="enable_depth"        default="true"/>
+  <arg name="enable_depth"        default="false"/>
 
   <arg name="enable_confidence"        default="false"/>
 
@@ -89,7 +89,7 @@
       <arg name="color_height"             value="$(arg color_height)"/>
       <arg name="enable_color"             value="$(arg enable_color)"/>
       <arg name="enable_depth"             value="$(arg enable_depth)"/>
-      <arg name="enable_pointcloud"             value="$(arg enable_depth)"/>
+      <arg name="enable_pointcloud"             value="$(arg enable_pointcloud)"/>
       <arg name="enable_confidence"             value="$(arg enable_confidence)"/>
 
       <arg name="color_fps"                value="$(arg color_fps)"/>
@@ -182,6 +182,4 @@
         <arg name="camera"              value="camera3" />
         <arg name="namespace"              value="camera3" />
     </include>
-      <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="camera_link_broadcaster" -->
-      <!-- args="1.28841 0.026703 0.626545   0.603626 0.600543 -0.354738 -0.386194 panda_link0 camera3_color_optical_frame" /> -->
 </launch>
