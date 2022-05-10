@@ -14,7 +14,7 @@
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
         args="cartesian_velocity_example_controller"/>
   <node name="controller_spawner2" pkg="controller_manager" type="spawner" respawn="false" output="screen"
-      args="--stopped position_joint_trajectory_controller joint_group_velocity_controller cartesian_pose_example_controller joint_group_position_controller effort_joint_trajectory_controller effort_joint_group_position_controller"/>
+      args="--stopped position_joint_trajectory_controller joint_group_velocity_controller"/>
 
 </launch>
 
