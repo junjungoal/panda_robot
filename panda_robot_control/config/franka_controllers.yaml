@@ -5,6 +5,17 @@ position_joint_trajectory_controller:
 cartesian_velocity_example_controller:
     type: panda_robot_controllers/CartesianVelocityExampleController
     arm_id: panda
+    max_duration_between_commands: 0.025
+    rate_limiting:
+        linear:
+            velocity: 0.5
+            acceleration: 8.0
+            jerk: 1000.0
+        angular:
+            velocity: 0.5
+            acceleration: 5.0
+            jerk: 2000.0
+    stop_on_contact: true
 
 cartesian_pose_example_controller:
     type: panda_robot_controllers/CartesianPoseExampleController
