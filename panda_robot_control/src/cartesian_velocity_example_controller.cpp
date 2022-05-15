@@ -120,7 +120,7 @@ void CartesianVelocityExampleController::update(const ros::Time&,
                                                 const ros::Duration& period) {
   elapsed_time_ += period;
 
-  double v_max = 0.15;
+  double v_max = 0.10;
   double angle = M_PI / 4.0;
 
   auto state_handle = this->state_interface->getHandle(arm_id + "_robot");
