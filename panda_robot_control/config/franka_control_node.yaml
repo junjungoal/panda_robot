@@ -11,7 +11,7 @@ arm_id: panda
 joint_limit_warning_threshold: 0.1 # [rad]
 # Activate rate limiter? [true|false]
 rate_limiting: true
-# Cutoff frequency of the low-pass filter. Set to >= 1000 to deactivate.
+# Cutoff frequency of the low-pass filter. Set to >= 200 to deactivate.
 cutoff_frequency: 100
 # Internal controller for motion generators [joint_impedance|cartesian_impedance]
 internal_controller: cartesian_impedance
@@ -19,11 +19,11 @@ internal_controller: cartesian_impedance
 realtime_config: enforce
 # Configure the initial defaults for the collision behavior reflexes.
 collision_config:
-  lower_torque_thresholds_acceleration: [1000.0, 1000.0, 1000, 1000, 1000, 1000, 1000]  # [Nm]
-  upper_torque_thresholds_acceleration: [1000, 1000, 1000, 1000, 1000, 1000, 1000]  # [Nm]
-  lower_torque_thresholds_nominal: [1000, 1000, 1000, 1000, 1000, 1000, 1000]  # [Nm]
-  upper_torque_thresholds_nominal: [1000, 1000, 1000, 1000, 1000, 1000, 1000]  # [Nm]
-  lower_force_thresholds_acceleration: [1000, 1000.0, 1000.0, 1000, 1000, 1000]  # [N, N, N, Nm, Nm, Nm]
-  upper_force_thresholds_acceleration: [1000, 1000.0, 1000.0, 1000, 1000, 1000]  # [N, N, N, Nm, Nm, Nm]
-  lower_force_thresholds_nominal: [1000, 1000, 1000, 1000, 1000, 1000]  # [N, N, N, Nm, Nm, Nm]
-  upper_force_thresholds_nominal: [1000.0, 1000.0, 1000.0, 1000, 1000, 1000]  # [N, N, N, Nm, Nm, Nm]
+  lower_torque_thresholds_acceleration: [200.0, 200.0, 200, 200, 200, 200, 200]  # [Nm]
+  upper_torque_thresholds_acceleration: [200, 200, 200, 200, 200, 200, 200]  # [Nm]
+  lower_torque_thresholds_nominal: [200, 200, 200, 200, 200, 200, 200]  # [Nm]
+  upper_torque_thresholds_nominal: [200, 200, 200, 200, 200, 200, 200]  # [Nm]
+  lower_force_thresholds_acceleration: [200, 200.0, 200.0, 200, 200, 200]  # [N, N, N, Nm, Nm, Nm]
+  upper_force_thresholds_acceleration: [200, 200.0, 200.0, 200, 200, 200]  # [N, N, N, Nm, Nm, Nm]
+  lower_force_thresholds_nominal: [200, 200, 200, 200, 200, 200]  # [N, N, N, Nm, Nm, Nm]
+  upper_force_thresholds_nominal: [200.0, 200.0, 200.0, 200, 200, 200]  # [N, N, N, Nm, Nm, Nm]
