@@ -20,11 +20,11 @@ internal_controller: cartesian_impedance
 realtime_config: enforce
 # Configure the initial defaults for the collision behavior reflexes.
 collision_config:
-  lower_torque_thresholds_acceleration: [120.0, 120.0, 118.0, 118.0, 116.0, 114.0, 112.0]  # [Nm]
-  upper_torque_thresholds_acceleration: [120.0, 120.0, 118.0, 118.0, 116.0, 114.0, 112.0]  # [Nm]
-  lower_torque_thresholds_nominal: [120.0, 120.0, 118.0, 118.0, 116.0, 114.0, 112.0]  # [Nm]
-  upper_torque_thresholds_nominal: [120.0, 120.0, 118.0, 118.0, 116.0, 114.0, 112.0]  # [Nm]
-  lower_force_thresholds_acceleration: [120.0, 120.0, 120.0, 125.0, 125.0, 125.0]  # [N, N, N, Nm, Nm, Nm]
-  upper_force_thresholds_acceleration: [120.0, 120.0, 120.0, 125.0, 125.0, 125.0]  # [N, N, N, Nm, Nm, Nm]
-  lower_force_thresholds_nominal: [120.0, 120.0, 120.0, 125.0, 125.0, 125.0]  # [N, N, N, Nm, Nm, Nm]
-  upper_force_thresholds_nominal: [120.0, 120.0, 120.0, 125.0, 125.0, 125.0]  # [N, N, N, Nm, Nm, Nm]
+  lower_torque_thresholds_acceleration: [1000.0, 1000.0, 1000, 1000, 1000, 1000, 1000]  # [Nm]
+  upper_torque_thresholds_acceleration: [1000, 1000, 1000, 1000, 1000, 1000, 1000]  # [Nm]
+  lower_torque_thresholds_nominal: [1000, 1000, 1000, 1000, 1000, 1000, 1000]  # [Nm]
+  upper_torque_thresholds_nominal: [1000, 1000, 1000, 1000, 1000, 1000, 1000]  # [Nm]
+  lower_force_thresholds_acceleration: [1000, 1000.0, 1000.0, 1000, 1000, 1000]  # [N, N, N, Nm, Nm, Nm]
+  upper_force_thresholds_acceleration: [1000, 1000.0, 1000.0, 1000, 1000, 1000]  # [N, N, N, Nm, Nm, Nm]
+  lower_force_thresholds_nominal: [1000, 1000, 1000, 1000, 1000, 1000]  # [N, N, N, Nm, Nm, Nm]
+  upper_force_thresholds_nominal: [1000.0, 1000.0, 1000.0, 1000, 1000, 1000]  # [N, N, N, Nm, Nm, Nm]
