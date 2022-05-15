@@ -1,9 +1,9 @@
 <launch>
-
   <arg name="load_gripper" default="true" />
 
   <include file="$(find panda_moveit_config)/launch/planning_context.launch">
       <arg name="load_gripper" value="$(arg load_gripper)" />
+      <arg name="load_robot_description" default="true"/>
   </include>
 
   <arg name="pipeline" default="ompl" />
