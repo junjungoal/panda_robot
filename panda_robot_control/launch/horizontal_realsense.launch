@@ -53,8 +53,8 @@ Processing enabled by this node:
   <arg name="device_type"         default=""/>
   <arg name="json_file_path"      default=""/>
 
-  <arg name="fisheye_width"       default="640"/>
-  <arg name="fisheye_height"      default="480"/>
+  <arg name="fisheye_width"       default="320"/>
+  <arg name="fisheye_height"      default="240"/>
   <arg name="enable_fisheye"      default="false"/>
 
   <arg name="depth_width"         default="640"/>
@@ -209,9 +209,9 @@ Processing enabled by this node:
   </node>
 
   <node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster"
-      args="1.17188 0.0125332 0.764363 0.667584 0.700593 -0.174871 -0.18144 /panda_link0 /$(arg camera)_color_optical_frame 40"/>
+      args="1.33849 0.0486072 0.934403   0.666078 0.659377 -0.264008 -0.227734 /panda_link0 /$(arg camera)_color_optical_frame 100"/>
   <node pkg="tf" type="static_transform_publisher" name="world2camera_link_broadcaster"
-      args="1.17188 0.0125332 0.764363 0.667584 0.700593 -0.174871 -0.18144 /world /$(arg camera)_link 40"/>
+      args="1.33849 0.0486072 0.934403   0.666078 0.659377 -0.264008 -0.227734 /world /$(arg camera)_link 100"/>
 
   <node name="configure_temporal_filter" pkg="dynamic_reconfigure" type="dynparam"
     args="set_from_parameters $(arg camera)/temporal">
