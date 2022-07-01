@@ -57,17 +57,17 @@ Processing enabled by this node:
   <arg name="fisheye_height"      default="240"/>
   <arg name="enable_fisheye"      default="false"/>
 
-  <arg name="depth_width"         default="640"/>
-  <arg name="depth_height"        default="480"/>
+  <arg name="depth_width"         default="320"/>
+  <arg name="depth_height"        default="240"/>
   <arg name="enable_depth"        default="true"/>
 
-  <arg name="infra_width"         default="640"/>
-  <arg name="infra_height"        default="480"/>
+  <arg name="infra_width"         default="320"/>
+  <arg name="infra_height"        default="240"/>
   <arg name="enable_infra1"       default="false"/>
   <arg name="enable_infra2"       default="false"/>
 
-  <arg name="color_width"         default="640"/>
-  <arg name="color_height"        default="480"/>
+  <arg name="color_width"         default="320"/>
+  <arg name="color_height"        default="240"/>
   <arg name="enable_color"        default="true"/>
 
   <arg name="fisheye_fps"         default="30"/>
@@ -209,9 +209,9 @@ Processing enabled by this node:
   </node>
 
   <node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster"
-      args="1.33849 0.0486072 0.934403   0.666078 0.659377 -0.264008 -0.227734 /panda_link0 /$(arg camera)_color_optical_frame 100"/>
+      args="1.34243 0.0489759 0.968818   0.682433 0.647928 -0.249525 -0.228501 /panda_link0 /$(arg camera)_color_optical_frame 30"/>
   <node pkg="tf" type="static_transform_publisher" name="world2camera_link_broadcaster"
-      args="1.33849 0.0486072 0.934403   0.666078 0.659377 -0.264008 -0.227734 /world /$(arg camera)_link 100"/>
+      args="1.34243 0.0489759 0.968818   0.682433 0.647928 -0.249525 -0.228501 /world /$(arg camera)_link 30"/>
 
   <node name="configure_temporal_filter" pkg="dynamic_reconfigure" type="dynparam"
     args="set_from_parameters $(arg camera)/temporal">
