@@ -1,15 +1,7 @@
 <?xml version="1.0" ?>
 <launch>
   <arg name="load_gripper" default="true" />
-  <arg name="launch_rviz" default="false" />
-  <arg name='launch_joy' default='true' />
-  <arg name='launch_sensor' default='true' />
-  <arg name='use_camera1' default='false' />
-  <arg name='use_camera2' default='true' />
-  <arg name='use_camera3' default='true' />
-  <arg name="config" default="$(find armer_panda)/cfg/panda_real.yaml" />
-  <arg name='launch_armer' default='false' />
-  <arg name='segmentation' default='false' />
+  <arg name="launch_rviz" default="true" />
 
 
   <!-- If needed, broadcast static tf for robot root -->
@@ -24,23 +16,6 @@
   <include file="$(find panda_robot_control)/launch/moveit_rviz.launch" if="$(arg launch_rviz)">
     <arg name="rviz_tutorial" value="false"/>
     <arg name="debug" value="false"/>
-</include>
-
-<include file="$(find panda_robot_control)/launch/franka_arm_joy.launch" if="$(arg launch_joy)" />
- <group if="$(arg launch_sensor)">
-  <include file="$(find panda_robot_control)/launch/sensor_bringup.launch" unless="$(arg segmentation)">
-      <arg name='use_camera1' value="$(arg use_camera1)" />
-      <arg name='use_camera2' value="$(arg use_camera2)" />
-      <arg name='use_camera3' value="$(arg use_camera3)" />
-  </include>
-  <include file="$(find panda_robot_control)/launch/sensor_bringup_segmentation.launch" if="$(arg segmentation)">
-      <arg name='use_camera1' value="$(arg use_camera1)" />
-      <arg name='use_camera2' value="$(arg use_camera2)" />
-      <arg name='use_camera3' value="$(arg use_camera3)" />
-  </include>
-</group>
-<include file="$(find armer)/launch/armer.launch" if="$(arg launch_armer)">
-    <arg name="config" value="$(arg config)" />
 </include>
 </launch>
 
