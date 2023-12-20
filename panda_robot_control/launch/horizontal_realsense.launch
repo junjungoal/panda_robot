@@ -208,10 +208,14 @@ Processing enabled by this node:
         <remap from="image" to="$(arg namespace)/depth/image_meters"/>
   </node>
 
+  <!-- <node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster" -->
+  <!--     args="1.34243 0.0489759 0.968818   0.682433 0.647928 -0.249525 -0.228501 /panda_link0 /$(arg camera)_color_optical_frame 30"/> -->
+  <!-- <node pkg="tf" type="static_transform_publisher" name="world2camera_link_broadcaster" -->
+  <!--     args="1.34243 0.0489759 0.968818   0.682433 0.647928 -0.249525 -0.228501 /world /$(arg camera)_link 30"/> -->
   <node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster"
-      args="1.34243 0.0489759 0.968818   0.682433 0.647928 -0.249525 -0.228501 /panda_link0 /$(arg camera)_color_optical_frame 30"/>
+      args="1.21655 0.0343689 0.834001   0.667528 0.685963 -0.211325 -0.198 /panda_link0 /$(arg camera)_color_optical_frame 30"/>
   <node pkg="tf" type="static_transform_publisher" name="world2camera_link_broadcaster"
-      args="1.34243 0.0489759 0.968818   0.682433 0.647928 -0.249525 -0.228501 /world /$(arg camera)_link 30"/>
+      args="1.21655 0.0343689 0.834001   0.667528 0.685963 -0.211325 -0.198 /world /$(arg camera)_link 30"/>
 
   <node name="configure_temporal_filter" pkg="dynamic_reconfigure" type="dynparam"
     args="set_from_parameters $(arg camera)/temporal">
